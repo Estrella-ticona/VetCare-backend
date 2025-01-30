@@ -8,6 +8,12 @@ import com.estrellaticona.vetcare.iam.application.internal.outboundservices.toke
 import com.estrellaticona.vetcare.iam.domain.model.aggregates.User;
 import com.estrellaticona.vetcare.iam.domain.model.commands.SignInCommand;
 import com.estrellaticona.vetcare.iam.domain.model.commands.SignUpCommand;
+import com.estrellaticona.vetcare.iam.domain.model.commands.UpdateDniCommand;
+import com.estrellaticona.vetcare.iam.domain.model.commands.UpdateEmailCommand;
+import com.estrellaticona.vetcare.iam.domain.model.commands.UpdateNameCommand;
+import com.estrellaticona.vetcare.iam.domain.model.commands.UpdatePasswordCommand;
+import com.estrellaticona.vetcare.iam.domain.model.commands.UpdatePhoneCommand;
+import com.estrellaticona.vetcare.iam.domain.model.commands.UpdateSpecialityCommand;
 import com.estrellaticona.vetcare.iam.domain.services.UserCommandService;
 import com.estrellaticona.vetcare.iam.infrastructure.persistence.jpa.repositories.UserRepository;
 
@@ -54,6 +60,80 @@ public class UserCommandServiceImpl implements UserCommandService {
             throw new RuntimeException("Invalid password");
 
         return tokenService.generateToken(user.get().getEmail());
+    }
+
+    @Override
+    public User handle(UpdateEmailCommand command) {
+        var user = userRepository.findById(command.id());
+
+        if (user.isEmpty())
+            throw new RuntimeException("User not found");
+
+        user.get().setEmail(command.email());
+
+        return userRepository.save(user.get());
+    }
+
+    @Override
+    public User handle(UpdatePasswordCommand command) {
+        var user = userRepository.findById(command.id());
+
+        if (user.isEmpty())
+            throw new RuntimeException("User not found");
+
+        var hashedPassword = hashingService.encode(command.password());
+
+        user.get().setPassword(hashedPassword);
+
+        return userRepository.save(user.get());
+    }
+
+    @Override
+    public User handle(UpdateNameCommand command) {
+        var user = userRepository.findById(command.id());
+
+        if (user.isEmpty())
+            throw new RuntimeException("User not found");
+
+        user.get().setName(command.name());
+
+        return userRepository.save(user.get());
+    }
+
+    @Override
+    public User handle(UpdateSpecialityCommand command) {
+        var user = userRepository.findById(command.id());
+
+        if (user.isEmpty())
+            throw new RuntimeException("User not found");
+
+        user.get().setSpeciality(command.speciality());
+
+        return userRepository.save(user.get());
+    }
+
+    @Override
+    public User handle(UpdateDniCommand command) {
+        var user = userRepository.findById(command.id());
+
+        if (user.isEmpty())
+            throw new RuntimeException("User not found");
+
+        user.get().setDni(command.dni());
+
+        return userRepository.save(user.get());
+    }
+
+    @Override
+    public User handle(UpdatePhoneCommand command) {
+        var user = userRepository.findById(command.id());
+
+        if (user.isEmpty())
+            throw new RuntimeException("User not found");
+
+        user.get().setPhone(command.phone());
+
+        return userRepository.save(user.get());
     }
 
 }

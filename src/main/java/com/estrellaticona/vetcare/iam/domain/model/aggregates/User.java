@@ -48,7 +48,9 @@ public class User extends AuditableAbstractAggregateRoot<User> {
         this.email = command.email();
         this.password = command.password();
         this.name = command.name();
-        this.speciality = command.speciality();
+        // Capitalize the first letter of the speciality
+        this.speciality = command.speciality().substring(0, 1).toUpperCase()
+                + command.speciality().substring(1).toLowerCase();
         this.dni = command.dni();
         this.phone = command.phone();
     }
