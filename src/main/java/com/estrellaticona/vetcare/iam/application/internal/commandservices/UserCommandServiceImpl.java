@@ -25,7 +25,14 @@ public class UserCommandServiceImpl implements UserCommandService {
     @Override
     public String handle(SignUpCommand command) {
         var hashedPassword = hashingService.encode(command.password());
-        var commandWithHashedPassword = new SignUpCommand(command.email(), hashedPassword);
+        var commandWithHashedPassword = new SignUpCommand(
+                command.email(),
+                hashedPassword,
+                command.name(),
+                command.speciality(),
+                command.dni(),
+                command.phone());
+
         var user = new User(commandWithHashedPassword);
 
         if (userRepository.existsByEmail(user.getEmail()))

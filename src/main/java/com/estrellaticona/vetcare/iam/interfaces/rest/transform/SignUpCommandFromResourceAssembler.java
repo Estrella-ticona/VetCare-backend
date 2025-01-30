@@ -7,6 +7,10 @@ public class SignUpCommandFromResourceAssembler {
     public static SignUpCommand toCommandFromResource(SignUpResource resource) {
         return new SignUpCommand(
                 resource.email(),
-                resource.password());
+                resource.password(),
+                resource.name(),
+                resource.speciality(),
+                resource.dni(),
+                resource.phone());
     }
 }
