@@ -4,18 +4,21 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.estrellaticona.vetcare.iam.domain.services.UserCommandService;
+import com.estrellaticona.vetcare.iam.domain.services.UserQueryService;
 import com.estrellaticona.vetcare.iam.interfaces.rest.resources.UpdateDniResource;
 import com.estrellaticona.vetcare.iam.interfaces.rest.resources.UpdateEmailResource;
 import com.estrellaticona.vetcare.iam.interfaces.rest.resources.UpdateNameResource;
 import com.estrellaticona.vetcare.iam.interfaces.rest.resources.UpdatePasswordResource;
 import com.estrellaticona.vetcare.iam.interfaces.rest.resources.UpdatePhoneResource;
 import com.estrellaticona.vetcare.iam.interfaces.rest.resources.UpdateSpecialityResource;
+import com.estrellaticona.vetcare.iam.interfaces.rest.transform.GetUserByIdQueryFromResourceAssembler;
 import com.estrellaticona.vetcare.iam.interfaces.rest.transform.UpdateDniCommandFromResourceAssembler;
 import com.estrellaticona.vetcare.iam.interfaces.rest.transform.UpdateEmailCommandFromResourceAssembler;
 import com.estrellaticona.vetcare.iam.interfaces.rest.transform.UpdateNameCommandFromResourceAssembler;
@@ -33,9 +36,29 @@ public class UserController {
     private UserCommandService userCommandService;
 
     @Autowired
+    private UserQueryService userQueryService;
+
+    @Autowired
     private HttpServletRequest request;
 
-    @PostMapping("/update-email")
+    @GetMapping()
+    public ResponseEntity<Object> getInfo() {
+        try {
+            var userId = ((Long) request.getAttribute("userId"));
+
+            var command = GetUserByIdQueryFromResourceAssembler.toQueryFromResource(userId);
+
+            var user = userQueryService.handle(command);
+
+            var userResource = UserResourceFromEntityAssembler.toResourceFromEntity(user);
+
+            return ResponseEntity.ok(userResource);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @PostMapping("/email")
     public ResponseEntity<Object> updateEmail(@RequestBody UpdateEmailResource resource) {
         try {
             var userId = ((Long) request.getAttribute("userId"));
@@ -52,7 +75,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/update-password")
+    @PostMapping("/password")
     public ResponseEntity<Object> updatePassword(@RequestBody UpdatePasswordResource resource) {
         try {
             var userId = ((Long) request.getAttribute("userId"));
@@ -69,7 +92,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/update-name")
+    @PostMapping("/name")
     public ResponseEntity<Object> updateName(@RequestBody UpdateNameResource resource) {
         try {
             var userId = ((Long) request.getAttribute("userId"));
@@ -86,7 +109,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/update-speciality")
+    @PostMapping("/speciality")
     public ResponseEntity<Object> updateSpeciality(@RequestBody UpdateSpecialityResource resource) {
         try {
             var userId = ((Long) request.getAttribute("userId"));
@@ -103,7 +126,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/update-dni")
+    @PostMapping("/dni")
     public ResponseEntity<Object> updateDni(@RequestBody UpdateDniResource resource) {
         try {
             var userId = ((Long) request.getAttribute("userId"));
@@ -120,7 +143,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/update-phone")
+    @PostMapping("/phone")
     public ResponseEntity<Object> updatePhone(@RequestBody UpdatePhoneResource resource) {
         try {
             var userId = ((Long) request.getAttribute("userId"));
