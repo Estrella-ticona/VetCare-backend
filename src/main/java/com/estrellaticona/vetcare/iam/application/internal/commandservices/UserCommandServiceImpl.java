@@ -75,6 +75,7 @@ public class UserCommandServiceImpl implements UserCommandService {
             user.get().setPassword(hashedPassword);
         }
 
+        user.get().setName(command.name());
         user.get().setEmail(command.email());
         user.get().setSpeciality(command.speciality());
         user.get().setDni(command.dni());
