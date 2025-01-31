@@ -14,6 +14,7 @@ import com.estrellaticona.vetcare.iam.domain.model.commands.UpdateNameCommand;
 import com.estrellaticona.vetcare.iam.domain.model.commands.UpdatePasswordCommand;
 import com.estrellaticona.vetcare.iam.domain.model.commands.UpdatePhoneCommand;
 import com.estrellaticona.vetcare.iam.domain.model.commands.UpdateSpecialityCommand;
+import com.estrellaticona.vetcare.iam.domain.model.commands.UpdateUserCommand;
 import com.estrellaticona.vetcare.iam.domain.services.UserCommandService;
 import com.estrellaticona.vetcare.iam.infrastructure.persistence.jpa.repositories.UserRepository;
 
@@ -60,6 +61,26 @@ public class UserCommandServiceImpl implements UserCommandService {
             throw new RuntimeException("Invalid password");
 
         return tokenService.generateToken(user.get().getEmail());
+    }
+
+    @Override
+    public User handle(UpdateUserCommand command) {
+        var user = userRepository.findById(command.id());
+
+        if (user.isEmpty())
+            throw new RuntimeException("User not found");
+
+        if (command.password().isPresent() && !command.password().get().isEmpty()) {
+            var hashedPassword = hashingService.encode(command.password().get());
+            user.get().setPassword(hashedPassword);
+        }
+
+        user.get().setEmail(command.email());
+        user.get().setSpeciality(command.speciality());
+        user.get().setDni(command.dni());
+        user.get().setPhone(command.phone());
+
+        return userRepository.save(user.get());
     }
 
     @Override

@@ -18,6 +18,7 @@ import com.estrellaticona.vetcare.iam.interfaces.rest.resources.UpdateNameResour
 import com.estrellaticona.vetcare.iam.interfaces.rest.resources.UpdatePasswordResource;
 import com.estrellaticona.vetcare.iam.interfaces.rest.resources.UpdatePhoneResource;
 import com.estrellaticona.vetcare.iam.interfaces.rest.resources.UpdateSpecialityResource;
+import com.estrellaticona.vetcare.iam.interfaces.rest.resources.UpdateUserResource;
 import com.estrellaticona.vetcare.iam.interfaces.rest.transform.GetUserByIdQueryFromResourceAssembler;
 import com.estrellaticona.vetcare.iam.interfaces.rest.transform.UpdateDniCommandFromResourceAssembler;
 import com.estrellaticona.vetcare.iam.interfaces.rest.transform.UpdateEmailCommandFromResourceAssembler;
@@ -25,6 +26,7 @@ import com.estrellaticona.vetcare.iam.interfaces.rest.transform.UpdateNameComman
 import com.estrellaticona.vetcare.iam.interfaces.rest.transform.UpdatePasswordCommandFromResourceAssembler;
 import com.estrellaticona.vetcare.iam.interfaces.rest.transform.UpdatePhoneCommandFromResourceAssembler;
 import com.estrellaticona.vetcare.iam.interfaces.rest.transform.UpdateSpecialityCommandFromResourceAssembler;
+import com.estrellaticona.vetcare.iam.interfaces.rest.transform.UpdateUserCommandFromResourceAssembler;
 import com.estrellaticona.vetcare.iam.interfaces.rest.transform.UserResourceFromEntityAssembler;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -49,6 +51,23 @@ public class UserController {
             var command = GetUserByIdQueryFromResourceAssembler.toQueryFromResource(userId);
 
             var user = userQueryService.handle(command);
+
+            var userResource = UserResourceFromEntityAssembler.toResourceFromEntity(user);
+
+            return ResponseEntity.ok(userResource);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @PostMapping()
+    public ResponseEntity<Object> updateUser(@RequestBody UpdateUserResource resource) {
+        try {
+            var userId = ((Long) request.getAttribute("userId"));
+
+            var command = UpdateUserCommandFromResourceAssembler.toCommandFromResource(userId, resource);
+
+            var user = userCommandService.handle(command);
 
             var userResource = UserResourceFromEntityAssembler.toResourceFromEntity(user);
 

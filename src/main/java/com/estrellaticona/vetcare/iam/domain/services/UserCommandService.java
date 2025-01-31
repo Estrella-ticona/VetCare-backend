@@ -9,11 +9,14 @@ import com.estrellaticona.vetcare.iam.domain.model.commands.UpdateNameCommand;
 import com.estrellaticona.vetcare.iam.domain.model.commands.UpdatePasswordCommand;
 import com.estrellaticona.vetcare.iam.domain.model.commands.UpdatePhoneCommand;
 import com.estrellaticona.vetcare.iam.domain.model.commands.UpdateSpecialityCommand;
+import com.estrellaticona.vetcare.iam.domain.model.commands.UpdateUserCommand;
 
 public interface UserCommandService {
     String handle(SignUpCommand command);
 
     String handle(SignInCommand command);
+
+    User handle(UpdateUserCommand command);
 
     User handle(UpdateEmailCommand command);
 
