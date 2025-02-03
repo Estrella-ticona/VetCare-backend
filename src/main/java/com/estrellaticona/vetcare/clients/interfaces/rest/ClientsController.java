@@ -49,7 +49,7 @@ public class ClientsController {
     }
 
     @GetMapping
-    public ResponseEntity<Object> getCients() {
+    public ResponseEntity<Object> getClients() {
         try {
             var query = new GetAllClientsQuery();
 
