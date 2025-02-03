@@ -15,11 +15,8 @@ public class ClientCommandServiceImpl implements ClientCommandService {
     @Autowired
     private ClientRepository clientRepository;
 
+    @Autowired
     private ExternalUserService externalUserService;
-
-    public ClientCommandServiceImpl(ExternalUserService externalUserService) {
-        this.externalUserService = externalUserService;
-    }
 
     @Override
     public Pair<Client, String> handle(CreateClientCommand command) {

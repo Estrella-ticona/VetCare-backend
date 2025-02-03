@@ -16,11 +16,9 @@ import com.estrellaticona.vetcare.clients.infrastructure.persistence.jpa.reposit
 public class ClientQueryServiceImpl implements ClientQueryService {
     @Autowired
     private ClientRepository clientRepository;
-    private ExternalUserService externalUserService;
 
-    public ClientQueryServiceImpl(ExternalUserService externalUserService) {
-        this.externalUserService = externalUserService;
-    }
+    @Autowired
+    private ExternalUserService externalUserService;
 
     @Override
     public List<Pair<Client, String>> handle(GetAllClientsQuery query) {

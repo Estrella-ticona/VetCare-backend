@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,7 +32,7 @@ public class ClientsController {
     private HttpServletRequest request;
 
     @PostMapping
-    public ResponseEntity<Object> createClient(CreateClientResource resource) {
+    public ResponseEntity<Object> createClient(@RequestBody CreateClientResource resource) {
         try {
             var doctorId = ((Long) request.getAttribute("userId"));
 
