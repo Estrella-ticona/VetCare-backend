@@ -20,8 +20,8 @@ public class Pet extends AuditableAbstractAggregateRoot<Pet> {
     @NotBlank
     private String name;
 
-    @NotBlank
-    private String gender;
+    @NotNull
+    private char gender;
 
     @NotNull
     @Column(nullable = false)
@@ -33,7 +33,12 @@ public class Pet extends AuditableAbstractAggregateRoot<Pet> {
     public Pet(CreatePetCommand command) {
         this.clientId = command.clientId();
         this.name = command.name();
-        this.gender = command.gender();
+
+        if (Character.toUpperCase(command.gender()) != 'M'
+                && Character.toUpperCase(command.gender()) != 'F')
+            throw new IllegalArgumentException("Gender must be M or F");
+
+        this.gender = Character.toUpperCase(command.gender());
         this.age = command.age();
     }
 }
