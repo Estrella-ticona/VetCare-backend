@@ -8,6 +8,7 @@ import com.estrellaticona.vetcare.clients.interfaces.rest.resources.ClientResour
 public class ClientResourceFromEntityAssembler {
     public static ClientResource toResourceFromEntity(Pair<Client, String> entity) {
         return new ClientResource(
+                entity.getFirst().getId(),
                 entity.getSecond(),
                 entity.getFirst().getName(),
                 entity.getFirst().getDni(),
