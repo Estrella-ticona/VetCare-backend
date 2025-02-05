@@ -4,7 +4,6 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +26,7 @@ public class PetsController {
     @Autowired
     private PetQueryService petQueryService;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<Object> createPet(@RequestBody CreatePetResource resource) {
         try {
             var command = CreatePetCommandFromResourceAssembler.toCommandFromResource(resource);
@@ -42,7 +41,7 @@ public class PetsController {
         }
     }
 
-    @GetMapping
+    @PostMapping
     public ResponseEntity<Object> getPetsByClientId(@RequestBody GetAllPetsByClientIdResource resource) {
         try {
             var query = GetAllPetsByClientIdQueryFromResourceAssembler.toQueryFromResource(resource);
