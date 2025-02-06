@@ -20,6 +20,9 @@ public class Pet extends AuditableAbstractAggregateRoot<Pet> {
     @NotBlank
     private String name;
 
+    @NotBlank
+    private String specie;
+
     @NotNull
     private char gender;
 
@@ -40,5 +43,6 @@ public class Pet extends AuditableAbstractAggregateRoot<Pet> {
 
         this.gender = Character.toUpperCase(command.gender());
         this.age = command.age();
+        this.specie = command.specie();
     }
 }

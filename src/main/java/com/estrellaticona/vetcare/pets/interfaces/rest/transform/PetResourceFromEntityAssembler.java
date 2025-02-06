@@ -10,6 +10,8 @@ public class PetResourceFromEntityAssembler {
                 entity.getClientId(),
                 entity.getName(),
                 entity.getGender(),
-                entity.getAge());
+                entity.getAge(),
+                entity.getSpecie(),
+                entity.getCreatedAt());
     }
 }

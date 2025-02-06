@@ -9,6 +9,7 @@ public class CreatePetCommandFromResourceAssembler {
                 resource.clientId(),
                 resource.name(),
                 resource.gender(),
-                resource.age());
+                resource.age(),
+                resource.specie());
     }
 }
