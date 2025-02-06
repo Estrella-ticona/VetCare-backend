@@ -7,6 +7,7 @@ public class PetResourceFromEntityAssembler {
     public static PetResource toResourceFromEntity(Pet entity) {
         return new PetResource(
                 entity.getId(),
+                entity.getClientId(),
                 entity.getName(),
                 entity.getGender(),
                 entity.getAge());
