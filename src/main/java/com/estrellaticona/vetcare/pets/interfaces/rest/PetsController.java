@@ -58,7 +58,7 @@ public class PetsController {
         }
     }
 
-    @PostMapping
+    @PostMapping("/delete")
     public ResponseEntity<Object> deletePetById(@RequestBody DeletePetResource resource) {
         try {
             var command = DeletePetCommandFromResourceAssembler.toCommandFromResource(resource);
