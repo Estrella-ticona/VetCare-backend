@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.estrellaticona.vetcare.pets.domain.services.PetCommandService;
 import com.estrellaticona.vetcare.pets.domain.services.PetQueryService;
 import com.estrellaticona.vetcare.pets.interfaces.rest.resources.CreatePetResource;
+import com.estrellaticona.vetcare.pets.interfaces.rest.resources.DeletePetResource;
 import com.estrellaticona.vetcare.pets.interfaces.rest.resources.GetAllPetsByClientIdResource;
 import com.estrellaticona.vetcare.pets.interfaces.rest.transform.CreatePetCommandFromResourceAssembler;
+import com.estrellaticona.vetcare.pets.interfaces.rest.transform.DeletePetCommandFromResourceAssembler;
 import com.estrellaticona.vetcare.pets.interfaces.rest.transform.GetAllPetsByClientIdQueryFromResourceAssembler;
 import com.estrellaticona.vetcare.pets.interfaces.rest.transform.PetResourceFromEntityAssembler;
 
@@ -51,6 +53,17 @@ public class PetsController {
             var petsResource = pets.stream().map(PetResourceFromEntityAssembler::toResourceFromEntity);
 
             return ResponseEntity.ok(petsResource);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<Object> deletePetById(@RequestBody DeletePetResource resource) {
+        try {
+            var command = DeletePetCommandFromResourceAssembler.toCommandFromResource(resource);
+            petCommandService.handle(command);
+            return ResponseEntity.ok().build();
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }

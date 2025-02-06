@@ -6,6 +6,7 @@ import com.estrellaticona.vetcare.pets.interfaces.rest.resources.PetResource;
 public class PetResourceFromEntityAssembler {
     public static PetResource toResourceFromEntity(Pet entity) {
         return new PetResource(
+                entity.getId(),
                 entity.getName(),
                 entity.getGender(),
                 entity.getAge());
