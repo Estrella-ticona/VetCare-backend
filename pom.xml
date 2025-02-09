@@ -30,6 +30,14 @@
 		<java.version>21</java.version>
 	</properties>
 	<dependencies>
+		<!-- varv -->
+		<dependency>
+		    <groupId>io.vavr</groupId>
+    		<artifactId>vavr</artifactId>
+    		<version>0.10.6</version>
+		</dependency>
+		<!-- varv -->
+
 		<!-- .env -->
 		<dependency>
 			<groupId>me.paulschwarz</groupId>
