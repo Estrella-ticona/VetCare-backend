@@ -15,6 +15,9 @@ import lombok.Setter;
 @Entity
 public class Appointment extends AuditableAbstractAggregateRoot<Appointment> {
     @NotNull
+    private Long doctorId;
+
+    @NotNull
     private Long clientId;
 
     @NotNull
@@ -23,6 +26,14 @@ public class Appointment extends AuditableAbstractAggregateRoot<Appointment> {
     @NotBlank
     private String reason;
 
+    private String description;
+
+    private String diagnosis;
+
+    private String treatment;
+
+    private String observations;
+
     @NotNull
     private LocalDateTime date;
 
@@ -30,9 +41,14 @@ public class Appointment extends AuditableAbstractAggregateRoot<Appointment> {
     }
 
     public Appointment(CreateAppointmentCommand command) {
+        this.doctorId = command.doctorId();
         this.clientId = command.clientId();
         this.petId = command.petId();
         this.reason = command.reason();
         this.date = command.date();
+        this.description = "";
+        this.diagnosis = "";
+        this.treatment = "";
+        this.observations = "";
     }
 }

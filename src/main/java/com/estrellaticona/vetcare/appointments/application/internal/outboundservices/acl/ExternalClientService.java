@@ -13,4 +13,8 @@ public class ExternalClientService {
     public boolean existsById(Long clientId) {
         return clientsContextFacade.existsById(clientId);
     }
+
+    public String getClientName(Long clientId) {
+        return clientsContextFacade.getClientName(clientId);
+    }
 }

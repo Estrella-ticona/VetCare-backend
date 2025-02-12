@@ -10,6 +10,7 @@ import com.estrellaticona.vetcare.clients.application.internal.outboundservices.
 import com.estrellaticona.vetcare.clients.domain.model.aggregates.Client;
 import com.estrellaticona.vetcare.clients.domain.model.queries.ExistsByIdQuery;
 import com.estrellaticona.vetcare.clients.domain.model.queries.GetAllClientsQuery;
+import com.estrellaticona.vetcare.clients.domain.model.queries.GetClientById;
 import com.estrellaticona.vetcare.clients.domain.services.ClientQueryService;
 import com.estrellaticona.vetcare.clients.infrastructure.persistence.jpa.repositories.ClientRepository;
 
@@ -36,5 +37,15 @@ public class ClientQueryServiceImpl implements ClientQueryService {
     @Override
     public boolean handle(ExistsByIdQuery query) {
         return clientRepository.existsById(query.clientId());
+    }
+
+    @Override
+    public Client handle(GetClientById query) {
+        var client = clientRepository.findById(query.clientId());
+
+        if (client.isEmpty())
+            throw new RuntimeException("Client not found");
+
+        return client.get();
     }
 }

@@ -17,6 +17,8 @@ import com.estrellaticona.vetcare.appointments.interfaces.rest.resources.CreateA
 import com.estrellaticona.vetcare.appointments.interfaces.rest.transform.AppointmentResourceFromEntityAssembler;
 import com.estrellaticona.vetcare.appointments.interfaces.rest.transform.CreateAppointmentCommandFromResourceAssembler;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/appointments")
 public class AppointmentsController {
@@ -26,10 +28,14 @@ public class AppointmentsController {
     @Autowired
     private AppointmentQueryService appointmentQueryService;
 
+    @Autowired
+    private HttpServletRequest request;
+
     @PostMapping
     public ResponseEntity<Object> createAppointment(@RequestBody CreateAppointmentResource resource) {
         try {
-            var command = CreateAppointmentCommandFromResourceAssembler.toCommandFromResource(resource);
+            var doctorId = ((Long) request.getAttribute("userId"));
+            var command = CreateAppointmentCommandFromResourceAssembler.toCommandFromResource(doctorId, resource);
             var appointment = appointmentCommandService.handle(command);
 
             var appointmentResource = AppointmentResourceFromEntityAssembler.toResourceFromEntity(appointment);

@@ -4,8 +4,9 @@ import com.estrellaticona.vetcare.appointments.domain.model.commands.CreateAppoi
 import com.estrellaticona.vetcare.appointments.interfaces.rest.resources.CreateAppointmentResource;
 
 public class CreateAppointmentCommandFromResourceAssembler {
-    public static CreateAppointmentCommand toCommandFromResource(CreateAppointmentResource resource) {
+    public static CreateAppointmentCommand toCommandFromResource(Long doctorId, CreateAppointmentResource resource) {
         return new CreateAppointmentCommand(
+                doctorId,
                 resource.clientId(),
                 resource.petId(),
                 resource.reason(),

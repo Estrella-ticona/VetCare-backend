@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.estrellaticona.vetcare.clients.domain.model.queries.ExistsByIdQuery;
+import com.estrellaticona.vetcare.clients.domain.model.queries.GetClientById;
 import com.estrellaticona.vetcare.clients.domain.services.ClientQueryService;
 
 @Service
@@ -15,6 +16,12 @@ public class ClientsContextFacade {
         var query = new ExistsByIdQuery(clientId);
 
         return clientQueryService.handle(query);
+    }
+
+    public String getClientName(Long clientId) {
+        var query = new GetClientById(clientId);
+        var client = clientQueryService.handle(query);
+        return client.getName();
     }
 }
 
