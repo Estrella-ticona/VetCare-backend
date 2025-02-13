@@ -2,6 +2,7 @@ package com.estrellaticona.vetcare.appointments.domain.services;
 
 import com.estrellaticona.vetcare.appointments.domain.model.aggregates.Appointment;
 import com.estrellaticona.vetcare.appointments.domain.model.commands.CreateAppointmentCommand;
+import com.estrellaticona.vetcare.appointments.domain.model.commands.UpdateAppointmentByIdCommand;
 
 import io.vavr.Tuple6;
 
@@ -16,4 +17,6 @@ public interface AppointmentCommandService {
      *         and pet gender
      */
     Tuple6<Appointment, String, String, String, String, String> handle(CreateAppointmentCommand command);
+
+    Tuple6<Appointment, String, String, String, String, String> handle(UpdateAppointmentByIdCommand command);
 }

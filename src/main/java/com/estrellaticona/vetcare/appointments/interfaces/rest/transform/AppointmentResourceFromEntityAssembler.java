@@ -16,6 +16,7 @@ public class AppointmentResourceFromEntityAssembler {
         var petGender = entity._6;
 
         return new AppointmentResource(
+                appointment.getId(),
                 appointment.getDoctorId(),
                 doctorName,
                 appointment.getClientId(),

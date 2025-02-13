@@ -11,6 +11,7 @@ import com.estrellaticona.vetcare.appointments.application.internal.outboundserv
 import com.estrellaticona.vetcare.appointments.application.internal.outboundservices.acl.ExternalUserService;
 import com.estrellaticona.vetcare.appointments.domain.model.aggregates.Appointment;
 import com.estrellaticona.vetcare.appointments.domain.model.queries.GetAllAppointmentsQuery;
+import com.estrellaticona.vetcare.appointments.domain.model.queries.GetHistoryByClientIdQuery;
 import com.estrellaticona.vetcare.appointments.domain.services.AppointmentQueryService;
 import com.estrellaticona.vetcare.appointments.infrastructure.persistence.jpa.repositories.AppointmentRepository;
 
@@ -35,6 +36,26 @@ public class AppointmentQueryServiceImpl implements AppointmentQueryService {
     @Override
     public List<Tuple6<Appointment, String, String, String, String, String>> handle(GetAllAppointmentsQuery query) {
         var appointmentsWithoutInfoPet = appointmentRepository.findAll();
+
+        var appointments = appointmentsWithoutInfoPet.stream()
+                .map(appointment -> {
+                    var doctorName = externalUserService.getNameById(appointment.getDoctorId());
+                    var clientName = externalClientService.getClientName(appointment.getClientId());
+                    var petInfo = externalPetService.getInfoById(appointment.getPetId());
+                    return Tuple.of(appointment, doctorName, clientName, petInfo._1(), petInfo._2(), petInfo._3());
+                })
+                .toList();
+
+        return appointments;
+    }
+
+    @Override
+    public List<Tuple6<Appointment, String, String, String, String, String>> handle(
+            GetHistoryByClientIdQuery query) {
+        var appointmentsWithoutInfoPet = appointmentRepository.findByClientId(query.clientId());
+
+        if (appointmentsWithoutInfoPet.isEmpty())
+            throw new IllegalArgumentException("No appointments found for client with id " + query.clientId());
 
         var appointments = appointmentsWithoutInfoPet.stream()
                 .map(appointment -> {

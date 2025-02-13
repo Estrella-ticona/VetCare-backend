@@ -47,7 +47,7 @@ public class AppointmentsController {
     }
 
     @GetMapping
-    public ResponseEntity<Object> getAllAppointmentsResource() {
+    public ResponseEntity<Object> getAllAppointments() {
         try {
             var query = new GetAllAppointmentsQuery();
             var appointments = appointmentQueryService.handle(query);

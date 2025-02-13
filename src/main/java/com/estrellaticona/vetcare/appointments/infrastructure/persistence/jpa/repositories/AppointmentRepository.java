@@ -5,6 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import com.estrellaticona.vetcare.appointments.domain.model.aggregates.Appointment;
 
+import java.util.Optional;
+
 @Repository
 public interface AppointmentRepository extends JpaRepository<Appointment, Long> {
+    Optional<Appointment> findByClientId(Long clientId);
 }
