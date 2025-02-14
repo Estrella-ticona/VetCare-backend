@@ -39,9 +39,13 @@ public class AppointmentCommandServiceImpl implements AppointmentCommandService 
         var appointment = new Appointment(command);
         var createdAppointment = clientRepository.save(appointment);
 
-        return Tuple.of(createdAppointment, appointmentInfo._1(), appointmentInfo._2, appointmentInfo._3,
-                appointmentInfo._4,
-                appointmentInfo._5);
+        return Tuple.of(
+                createdAppointment,
+                appointmentInfo._1(),
+                appointmentInfo._2(),
+                appointmentInfo._3(),
+                appointmentInfo._4(),
+                appointmentInfo._5());
     }
 
     @Override
@@ -63,9 +67,13 @@ public class AppointmentCommandServiceImpl implements AppointmentCommandService 
 
         var updatedAppointment = clientRepository.save(appointment.get());
 
-        return Tuple.of(updatedAppointment, appointmentInfo._1(), appointmentInfo._2, appointmentInfo._3,
-                appointmentInfo._4,
-                appointmentInfo._5);
+        return Tuple.of(
+                updatedAppointment,
+                appointmentInfo._1(),
+                appointmentInfo._2(),
+                appointmentInfo._3(),
+                appointmentInfo._4(),
+                appointmentInfo._5());
     }
 
     private Tuple5<String, String, String, String, String> getAppointmentInfo(Long doctorId, Long clientId,
