@@ -2,17 +2,15 @@ package com.estrellaticona.vetcare.appointments.domain.services;
 
 import java.util.List;
 
-import com.estrellaticona.vetcare.appointments.domain.model.aggregates.Appointment;
 import com.estrellaticona.vetcare.appointments.domain.model.queries.GetAllAppointmentsQuery;
 import com.estrellaticona.vetcare.appointments.domain.model.queries.GetAllHistoriesQuery;
 import com.estrellaticona.vetcare.appointments.domain.model.queries.GetHistoryByClientIdQuery;
-
-import io.vavr.Tuple6;
+import com.estrellaticona.vetcare.appointments.domain.model.valueobjects.AppointmentWithInfo;
 
 public interface AppointmentQueryService {
-    List<Tuple6<Appointment, String, String, String, String, String>> handle(GetAllAppointmentsQuery query);
+    List<AppointmentWithInfo> handle(GetAllAppointmentsQuery query);
 
-    List<Tuple6<Appointment, String, String, String, String, String>> handle(GetHistoryByClientIdQuery query);
+    List<AppointmentWithInfo> handle(GetHistoryByClientIdQuery query);
 
-    List<List<Tuple6<Appointment, String, String, String, String, String>>> handle(GetAllHistoriesQuery query);
+    List<List<AppointmentWithInfo>> handle(GetAllHistoriesQuery query);
 }

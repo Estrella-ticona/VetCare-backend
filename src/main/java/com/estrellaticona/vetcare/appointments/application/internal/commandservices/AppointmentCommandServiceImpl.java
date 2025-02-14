@@ -1,5 +1,7 @@
 package com.estrellaticona.vetcare.appointments.application.internal.commandservices;
 
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -10,11 +12,12 @@ import com.estrellaticona.vetcare.appointments.application.internal.outboundserv
 import com.estrellaticona.vetcare.appointments.domain.model.aggregates.Appointment;
 import com.estrellaticona.vetcare.appointments.domain.model.commands.CreateAppointmentCommand;
 import com.estrellaticona.vetcare.appointments.domain.model.commands.UpdateAppointmentByIdCommand;
+import com.estrellaticona.vetcare.appointments.domain.model.valueobjects.AppointmentWithInfo;
 import com.estrellaticona.vetcare.appointments.domain.services.AppointmentCommandService;
 import com.estrellaticona.vetcare.appointments.infrastructure.persistence.jpa.repositories.AppointmentRepository;
 
 import io.vavr.Tuple;
-import io.vavr.Tuple5;
+import io.vavr.Tuple3;
 import io.vavr.Tuple6;
 
 @Service
@@ -33,23 +36,23 @@ public class AppointmentCommandServiceImpl implements AppointmentCommandService 
     private ExternalUserService externalUserService;
 
     @Override
-    public Tuple6<Appointment, String, String, String, String, String> handle(CreateAppointmentCommand command) {
+    public AppointmentWithInfo handle(CreateAppointmentCommand command) {
         var appointmentInfo = getAppointmentInfo(command.doctorId(), command.clientId(), command.petId());
 
         var appointment = new Appointment(command);
         var createdAppointment = clientRepository.save(appointment);
 
-        return Tuple.of(
+        var appointmentWithInfo = new AppointmentWithInfo(
                 createdAppointment,
                 appointmentInfo._1(),
                 appointmentInfo._2(),
-                appointmentInfo._3(),
-                appointmentInfo._4(),
-                appointmentInfo._5());
+                appointmentInfo._3());
+
+        return appointmentWithInfo;
     }
 
     @Override
-    public Tuple6<Appointment, String, String, String, String, String> handle(UpdateAppointmentByIdCommand command) {
+    public AppointmentWithInfo handle(UpdateAppointmentByIdCommand command) {
         var appointment = clientRepository.findById(command.appointmentId());
 
         if (appointment.isEmpty())
@@ -67,16 +70,17 @@ public class AppointmentCommandServiceImpl implements AppointmentCommandService 
 
         var updatedAppointment = clientRepository.save(appointment.get());
 
-        return Tuple.of(
+        var appointmentWithInfo = new AppointmentWithInfo(
                 updatedAppointment,
                 appointmentInfo._1(),
                 appointmentInfo._2(),
-                appointmentInfo._3(),
-                appointmentInfo._4(),
-                appointmentInfo._5());
+                appointmentInfo._3());
+
+        return appointmentWithInfo;
     }
 
-    private Tuple5<String, String, String, String, String> getAppointmentInfo(Long doctorId, Long clientId,
+    private Tuple3<String, String, Tuple6<String, String, String, String, LocalDate, Float>> getAppointmentInfo(
+            Long doctorId, Long clientId,
             Long petId) {
         if (!externalClientService.existsById(clientId))
             throw new RuntimeException("Client not found");
@@ -92,6 +96,6 @@ public class AppointmentCommandServiceImpl implements AppointmentCommandService 
         var petInfo = externalPetService.getInfoById(petId);
 
         // doctorName, clientName, petName, petSpecie, petGender
-        return Tuple.of(doctorName, clientName, petInfo._1(), petInfo._2(), petInfo._3());
+        return Tuple.of(doctorName, clientName, petInfo);
     }
 }

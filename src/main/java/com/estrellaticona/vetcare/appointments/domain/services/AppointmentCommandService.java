@@ -1,10 +1,8 @@
 package com.estrellaticona.vetcare.appointments.domain.services;
 
-import com.estrellaticona.vetcare.appointments.domain.model.aggregates.Appointment;
 import com.estrellaticona.vetcare.appointments.domain.model.commands.CreateAppointmentCommand;
 import com.estrellaticona.vetcare.appointments.domain.model.commands.UpdateAppointmentByIdCommand;
-
-import io.vavr.Tuple6;
+import com.estrellaticona.vetcare.appointments.domain.model.valueobjects.AppointmentWithInfo;
 
 public interface AppointmentCommandService {
     /**
@@ -16,7 +14,7 @@ public interface AppointmentCommandService {
      *         pet species,
      *         and pet gender
      */
-    Tuple6<Appointment, String, String, String, String, String> handle(CreateAppointmentCommand command);
+    AppointmentWithInfo handle(CreateAppointmentCommand command);
 
-    Tuple6<Appointment, String, String, String, String, String> handle(UpdateAppointmentByIdCommand command);
+    AppointmentWithInfo handle(UpdateAppointmentByIdCommand command);
 }
