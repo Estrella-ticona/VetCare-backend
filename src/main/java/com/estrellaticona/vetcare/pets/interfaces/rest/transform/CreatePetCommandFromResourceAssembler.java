@@ -8,8 +8,10 @@ public class CreatePetCommandFromResourceAssembler {
         return new CreatePetCommand(
                 resource.clientId(),
                 resource.name(),
+                resource.specie(),
                 resource.gender(),
-                resource.age(),
-                resource.specie());
+                resource.breed(),
+                resource.birthDate(),
+                resource.weight());
     }
 }

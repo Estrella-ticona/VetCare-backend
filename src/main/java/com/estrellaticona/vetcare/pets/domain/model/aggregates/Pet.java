@@ -1,9 +1,10 @@
 package com.estrellaticona.vetcare.pets.domain.model.aggregates;
 
+import java.time.LocalDate;
+
 import com.estrellaticona.vetcare.pets.domain.model.commands.CreatePetCommand;
 import com.estrellaticona.vetcare.shared.domain.model.aggregates.AuditableAbstractAggregateRoot;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -26,9 +27,14 @@ public class Pet extends AuditableAbstractAggregateRoot<Pet> {
     @NotNull
     private char gender;
 
+    @NotBlank
+    private String breed;
+
     @NotNull
-    @Column(nullable = false)
-    private Integer age;
+    private LocalDate birthDate;
+
+    @NotNull
+    private Float weight;
 
     public Pet() {
     }
@@ -42,7 +48,9 @@ public class Pet extends AuditableAbstractAggregateRoot<Pet> {
             throw new IllegalArgumentException("Gender must be M or F");
 
         this.gender = Character.toUpperCase(command.gender());
-        this.age = command.age();
         this.specie = command.specie();
+        this.breed = command.breed();
+        this.birthDate = command.birthDate();
+        this.weight = command.weight();
     }
 }
